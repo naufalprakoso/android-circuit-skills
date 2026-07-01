@@ -51,8 +51,9 @@ Load only the references needed for the task:
 | Code review or refactor | `clean-code-review.md`, `architecture-state.md`, plus affected-domain references |
 | Navigation, results, overlays, retained state | `navigation-retention.md`, `architecture-state.md`, `testing.md`, `examples.md` |
 | Circuit factory, codegen, or DI wiring | `codegen-di.md`, `architecture-state.md`, `source-map.md` if APIs are uncertain |
-| Performance | `compose-ui-performance.md`, `testing.md` |
-| Accessibility | `accessibility-quality.md`, `compose-ui-performance.md`, `testing.md` |
+| Compose UI implementation | `compose-ui-performance.md`, `accessibility-quality.md`, `testing.md`, `examples.md` |
+| Performance | `compose-ui-performance.md`, `testing.md`, `source-map.md` if measurement tooling or stability APIs are uncertain |
+| Accessibility | `accessibility-quality.md`, `compose-ui-performance.md`, `testing.md`, `examples.md` |
 | Coroutine, Flow, lifecycle, or async event work | `coroutines-lifecycle.md`, `testing.md`, `examples.md`, `source-map.md` if official guidance or API behavior is uncertain |
 | Kotlin Multiplatform | `cross-platform.md`, plus relevant architecture/data/UI references |
 | Circuit API uncertainty | `source-map.md`, then current official Circuit docs or matching source tag |
@@ -120,6 +121,7 @@ Severity: Critical for likely security compromise, data loss, or severe producti
 - Long-running durable work is not owned solely by a screen presenter.
 - Raw DTOs, HTTP responses, database cursors, transport exceptions, secrets, and tokens do not leak into UI state.
 - Retry policies are bounded and error-aware; authentication secrets are never logged.
+- Composable APIs follow modifier, state hoisting, slot, stability, lazy layout, semantics, and adaptive-layout conventions.
 - Compose performance changes require evidence.
 - `@Stable` and `@Immutable` are contracts, not warning suppressors.
 - Accessibility is implemented and tested for new user-facing behavior.

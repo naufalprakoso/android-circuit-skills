@@ -38,6 +38,24 @@
 - Experimental API is used without acknowledgement.
 - Android type leaks into `commonMain`.
 
+## Compose-Specific Smells
+
+- The caller's `modifier` is ignored, applied to a non-root node, or applied multiple times.
+- A composable exposes many booleans or nullable slots instead of a clear state model or slot API.
+- UI mutates business state directly instead of emitting a typed event.
+- Screen UI state is kept in local `remember` even though presenter, navigation, repository, or another component must observe it.
+- Large objects, DTOs, mutable lists, or domain graphs are stored with `rememberSaveable`.
+- `remember` is keyed incorrectly, causing stale derived values or repeated expensive work.
+- `derivedStateOf` is used for cheap values or without reducing meaningful recomposition.
+- `@Stable` or `@Immutable` is applied to a type that has mutable public state, unstable equality, or mutable collections.
+- Lazy list items lack stable keys for identity-bearing rows.
+- Lazy lists with mixed row layouts omit `contentType`.
+- Heavy mapping, formatting, image request building, or sorting happens inside lazy item composition.
+- Custom controls omit semantics, role, selected/checked/disabled state, minimum touch target, focus behavior, or accessible alternatives.
+- `testTag` is used as the only accessibility/test strategy when text, role, content description, or state should be asserted.
+- Phone-only layout assumptions break wide screens, foldables, desktop, keyboard, mouse, or high font scale.
+- Performance claims are made without release/profileable measurement, compiler reports, trace evidence, or a concrete removed hotspot.
+
 ## Coroutine-Specific Smells
 
 - `CoroutineScope(...)` is constructed in a feature class without an injected owner.

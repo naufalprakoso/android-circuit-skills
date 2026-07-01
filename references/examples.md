@@ -3,6 +3,9 @@
 ## Table of Contents
 
 - [Basic Screen, State, Event, Presenter, and Ui](#basic-screen-state-event-presenter-and-ui)
+- [Composable API Shape](#composable-api-shape)
+- [Lazy List Keys and Content Types](#lazy-list-keys-and-content-types)
+- [Effect Keys and Latest Callback](#effect-keys-and-latest-callback)
 - [Sealed Loading, Content, and Error State](#sealed-loading-content-and-error-state)
 - [Repository-Backed Presenter](#repository-backed-presenter)
 - [Retained Flow Observation](#retained-flow-observation)
@@ -19,6 +22,7 @@
 - [StaticScreen](#staticscreen)
 - [Presenter Test](#presenter-test)
 - [Ui Test](#ui-test)
+- [Semantics Test](#semantics-test)
 - [Coroutine Retry Test](#coroutine-retry-test)
 - [KMP Boundary](#kmp-boundary)
 - [Before and After](#before-and-after)
@@ -70,6 +74,81 @@ fun ProductDetails(state: ProductDetailsScreen.State, modifier: Modifier = Modif
   }
 }
 ```
+
+## Composable API Shape
+
+```kotlin
+@Composable
+fun ProductSummary(
+  title: String,
+  priceText: String,
+  onClick: () -> Unit,
+  modifier: Modifier = Modifier,
+  trailingContent: @Composable RowScope.() -> Unit = {},
+) {
+  Row(
+    modifier = modifier
+      .fillMaxWidth()
+      .clickable(onClick = onClick)
+      .padding(16.dp),
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    Column(Modifier.weight(1f)) {
+      Text(title)
+      Text(priceText)
+    }
+    trailingContent()
+  }
+}
+```
+
+Apply the caller's `modifier` to the root node. Prefer slot APIs for variable child content over several booleans that switch layout branches.
+
+## Lazy List Keys and Content Types
+
+```kotlin
+LazyColumn {
+  items(
+    items = state.rows,
+    key = { row -> row.stableKey },
+    contentType = { row -> row.contentType },
+  ) { row ->
+    when (row) {
+      is ProductRow.Item -> ProductListItem(row.product)
+      ProductRow.Loading -> LoadingRow()
+      is ProductRow.Error -> RetryRow(row.message, row.onRetry)
+    }
+  }
+}
+```
+
+Use stable keys for identity and content types when rows have different structure. Keep heavy mapping outside the item lambda.
+
+## Effect Keys and Latest Callback
+
+```kotlin
+@Composable
+fun ProductRefreshEffect(
+  productId: ProductId,
+  onTimeout: () -> Unit,
+  refresh: suspend (ProductId) -> Unit,
+) {
+  val latestOnTimeout by rememberUpdatedState(onTimeout)
+
+  LaunchedEffect(productId) {
+    val completed =
+      withTimeoutOrNull(5.seconds) {
+        refresh(productId)
+        true
+      }
+    if (completed != true) {
+      latestOnTimeout()
+    }
+  }
+}
+```
+
+Key effects by the value that should restart the work. Use `rememberUpdatedState` for changing callbacks or values that the running effect should observe without restarting.
 
 ## Sealed Loading, Content, and Error State
 
@@ -365,6 +444,26 @@ fun retryClickEmitsEvent() {
   sink.assertEvent(ProductEvent.Retry)
 }
 ```
+
+## Semantics Test
+
+```kotlin
+@Test
+fun submitButtonExposesDisabledState() {
+  composeRule.setContent {
+    CheckoutSubmitButton(
+      enabled = false,
+      onClick = {},
+    )
+  }
+
+  composeRule
+    .onNodeWithText("Submit")
+    .assertIsNotEnabled()
+}
+```
+
+Prefer semantic assertions over layout-shape assertions. Use tags only when text, content description, role, or state is not a stable handle.
 
 ## Coroutine Retry Test
 

@@ -24,6 +24,16 @@ Prefer fakes over mocking Circuit core components. Do not compare whole state ob
 
 Construct `UiState` directly and test content rendering, loading, empty, error, event emission, semantics, enabled/disabled states, long text, scroll behavior, accessibility labels, touch actions, and responsive variants. Use `TestEventSink` when appropriate.
 
+Prefer semantics-based queries such as text, content description, role, selected state, enabled state, and custom semantics properties. Use `testTag` for stable test hooks when no user-visible or semantic handle exists, not as an accessibility label.
+
+Test Compose UI in isolation when possible by setting content to the composable under test with a constructed state and recording event sink. Use larger UI tests for integration paths that require navigation, real resources, or mixed View/Compose surfaces.
+
+For custom components, assert the semantic contract: click action, role, state description, selected/checked/disabled state, progress, heading, error, and collection semantics where relevant. Print the semantics tree when a test is unclear instead of guessing at node structure.
+
+Cover visual-resilience inputs when they can break the feature: long translations, large font scale, RTL, dark theme, narrow width, wide width, empty data, loading rows, and error rows. Use screenshot tests only when the project already has stable infrastructure or the visual risk justifies it.
+
+Use unmerged semantics tree only when the component intentionally merges descendants and the assertion needs an internal node.
+
 ## Networking Tests
 
 Use the project's established tool: MockWebServer, Ktor MockEngine, fake transport, contract fixture, or equivalent.

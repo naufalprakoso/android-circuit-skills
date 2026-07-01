@@ -33,9 +33,21 @@ Latest Circuit release observed during this update: `0.34.0`. The upstream chang
 | Compose performance | https://developer.android.com/develop/ui/compose/performance |
 | Compose performance best practices | https://developer.android.com/develop/ui/compose/performance/bestpractices |
 | Compose stability | https://developer.android.com/develop/ui/compose/performance/stability |
+| Compose stability diagnostics | https://developer.android.com/develop/ui/compose/performance/stability/diagnose |
+| Compose state | https://developer.android.com/develop/ui/compose/state |
+| Compose state hoisting | https://developer.android.com/develop/ui/compose/state-hoisting |
+| Compose state saving | https://developer.android.com/develop/ui/compose/state-saving |
+| Compose modifiers | https://developer.android.com/develop/ui/compose/modifiers |
+| Compose lists and grids | https://developer.android.com/develop/ui/compose/lists |
 | Compose side effects | https://developer.android.com/develop/ui/compose/side-effects |
+| Compose testing | https://developer.android.com/develop/ui/compose/testing |
+| Compose testing APIs | https://developer.android.com/develop/ui/compose/testing/apis |
+| Compose semantics testing | https://developer.android.com/develop/ui/compose/testing/semantics |
+| Compose accessibility API defaults | https://developer.android.com/develop/ui/compose/accessibility/api-defaults |
 | Compose accessibility | https://developer.android.com/develop/ui/compose/accessibility |
 | Compose accessibility testing | https://developer.android.com/develop/ui/compose/accessibility/testing |
+| Compose adaptive layouts | https://developer.android.com/develop/ui/compose/layouts/adaptive/get-started-with-adaptive-apps |
+| Macrobenchmark | https://developer.android.com/topic/performance/benchmarking/macrobenchmark-overview |
 | Android coroutine best practices | https://developer.android.com/kotlin/coroutines/coroutines-best-practices |
 | Android coroutine testing | https://developer.android.com/kotlin/coroutines/test |
 | Android Flow guide | https://developer.android.com/kotlin/flow |
