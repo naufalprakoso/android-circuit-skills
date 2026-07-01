@@ -43,3 +43,25 @@
 Start with evidence. Prioritize correctness, lifecycle, cancellation, security, data flow, accessibility, and user-visible impact over style. Trace data from source to repository/use case to presenter to state to UI. Provide concrete remediation and suggested verification.
 
 Classify each item as defect, risk, opportunity, or style preference. Do not report style preferences as correctness defects.
+
+## Circuit Data-Flow Trace
+
+For every meaningful finding, trace the behavior through the Circuit loop:
+
+```text
+user action -> Ui event -> Presenter branch -> repository/use case -> state emission -> Ui rendering -> test evidence
+```
+
+For navigation and overlays, extend the trace:
+
+```text
+Ui event -> Presenter branch -> Navigator/overlay/result action -> stack or modal state -> restored state -> test evidence
+```
+
+For coroutine and networking issues, extend the trace:
+
+```text
+trigger -> coroutine owner -> dispatcher or upstream flow -> cancellation/error path -> state emission -> retry or recovery behavior
+```
+
+If a finding cannot be connected to one of these traces, report it as a lower-priority suggestion rather than a defect.

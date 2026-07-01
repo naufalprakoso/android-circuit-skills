@@ -1,6 +1,8 @@
 # Source Map
 
-Sources last checked: 2026-06-24.
+Sources last checked: 2026-07-01.
+
+Latest Circuit release observed during this update: `0.34.0`. The upstream changelog also had unreleased SubCircuit Metro-mode fixes. Always inspect the target project's resolved Circuit version and, for snapshots or unreleased commits, inspect the matching source revision directly.
 
 ## Official Source Hierarchy
 
@@ -22,6 +24,8 @@ Sources last checked: 2026-06-24.
 | Presenter scaling patterns | https://slackhq.github.io/circuit/docs/presenter-patterns/ |
 | Ui docs | https://slackhq.github.io/circuit/docs/ui/ |
 | Navigation docs | https://slackhq.github.io/circuit/docs/navigation/ |
+| Navigation migration | https://slackhq.github.io/circuit/docs/navigation-navstack-migration/ |
+| Overlays | https://slackhq.github.io/circuit/docs/overlays/ |
 | Testing docs | https://slackhq.github.io/circuit/docs/testing/ |
 | Code generation docs | https://slackhq.github.io/circuit/docs/code-gen/ |
 | SubCircuit docs | https://slackhq.github.io/circuit/circuitx/subcircuit/ |
@@ -57,7 +61,7 @@ Use the tag that matches the project. If the project uses a snapshot or unreleas
 | Retained-state APIs | `rememberRetained`, `rememberRetainedSaveable`, `produceRetainedState`, lifecycle of retained records |
 | Lifecycle presentation behavior | record lifecycle, paused records, composition locals, back-stack retention |
 | Code generation modes | Anvil, Hilt, kotlin-inject-anvil, Metro, KSP args, assisted injection requirements |
-| SubCircuit | availability of `circuitx-subcircuit`, `SubPresenter`, `SubUi`, `SubCircuitContent`, `@SubCircuitInject`, test artifact |
+| SubCircuit | availability of `circuitx-subcircuit`, `SubPresenter`, `SubUi`, `SubCircuitContent`, `@SubCircuitInject`, Anvil or Metro mode, test artifact |
 | Overlays | `circuit-overlay`, `OverlayEffect`, dialog and sheet APIs, overlay versus `PopResult` |
 | Gesture navigation | `circuitx-gesture-navigation`, predictive back behavior, platform support |
 | Testing helpers | `presenterTestOf`, `Presenter.test`, `FakeNavigator`, `TestEventSink`, SubPresenter tests |

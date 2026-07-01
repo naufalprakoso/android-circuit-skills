@@ -133,11 +133,13 @@ The skill can also be invoked implicitly for Kotlin Android or KMP work involvin
     ├── accessibility-quality.md
     ├── architecture-state.md
     ├── clean-code-review.md
+    ├── codegen-di.md
     ├── compose-ui-performance.md
     ├── coroutines-lifecycle.md
     ├── cross-platform.md
     ├── data-networking.md
     ├── examples.md
+    ├── navigation-retention.md
     ├── network-resilience-security.md
     ├── source-map.md
     └── testing.md

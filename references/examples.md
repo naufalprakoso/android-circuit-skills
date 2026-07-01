@@ -20,7 +20,11 @@
 - [KMP Boundary](#kmp-boundary)
 - [Before and After](#before-and-after)
 
-Use the target project's resolved Circuit version and imports. These examples show shape, not dependency declarations.
+Use the target project's resolved Circuit version and imports. The short examples show architecture shape. The compile-oriented slices include the local assumptions they rely on; adapt imports, annotations, and DI to the project.
+
+## Compile-Oriented Slice Assumptions
+
+Examples assume current Circuit concepts such as `Screen`, `CircuitUiState`, `CircuitUiEvent`, `Presenter`, `Navigator`, `FakeNavigator`, and `TestEventSink`. If a project uses older APIs, check `source-map.md` and the matching Circuit source tag before copying names.
 
 ## Basic Screen, State, Event, Presenter, and Ui
 
@@ -131,14 +135,23 @@ return CheckoutState(submitState) { event ->
       if (submitState != SubmitState.Submitting) {
         scope.launch {
           submitState = SubmitState.Submitting
-          submitState = runCatching { submitOrder() }
-            .fold(onSuccess = { SubmitState.Complete }, onFailure = { SubmitState.Failed })
+          submitState =
+            try {
+              submitOrder()
+              SubmitState.Complete
+            } catch (e: CancellationException) {
+              throw e
+            } catch (e: Exception) {
+              SubmitState.Failed
+            }
         }
       }
     }
   }
 }
 ```
+
+Never use `runCatching` around suspend work unless cancellation is rethrown before mapping failures.
 
 ## Navigator Usage
 
@@ -176,12 +189,26 @@ val filterNavigator = rememberAnsweringNavigator<FilterScreen.Result>(navigator)
 ## Overlay Handling
 
 ```kotlin
-sealed interface DeleteState : CircuitUiState {
-  data class Content(val showConfirm: Boolean, val eventSink: (DeleteEvent) -> Unit) : DeleteState
+data class DeleteState(
+  val itemName: String,
+  val modal: DeleteModal?,
+  val eventSink: (DeleteEvent) -> Unit,
+) : CircuitUiState
+
+sealed interface DeleteModal {
+  data object ConfirmDelete : DeleteModal
+  data object Deleting : DeleteModal
+  data class Failed(val message: String) : DeleteModal
+}
+
+sealed interface DeleteEvent : CircuitUiEvent {
+  data object DeleteClicked : DeleteEvent
+  data object ConfirmDeleteClicked : DeleteEvent
+  data object DismissModal : DeleteEvent
 }
 ```
 
-Use the installed overlay artifact and project conventions for dialog rendering. Prefer an overlay for transient confirmation over a navigated screen unless the flow should return a typed result.
+Use the installed overlay artifact and project conventions for dialog rendering. Prefer an overlay for transient confirmation over a navigated screen unless the flow is a destination that should return a typed `PopResult`. Avoid a lone boolean when async work, failure, result data, or multiple modal states are involved.
 
 ## Presenter Decomposition
 
@@ -240,7 +267,7 @@ class PriceCardPresenter(
 }
 ```
 
-Use SubCircuit only when the installed version includes it and the child component should delegate navigation or cross-cutting events to the parent.
+Use SubCircuit only when the installed version includes it and the child component has its own reusable presenter/UI contract while delegating navigation or cross-cutting events to the parent. Do not introduce SubCircuit just to split a small composable or avoid passing a callback.
 
 ## StaticScreen
 
@@ -296,7 +323,7 @@ fun retryStopsAfterBound() = runTest {
   val result = runCatching {
     retryTransient(maxAttempts = 3) {
       attempts.incrementAndGet()
-      throw TimeoutCancellationException("timeout")
+      throw IOException("timeout")
     }
   }
   assertThat(attempts.get()).isEqualTo(3)
@@ -338,8 +365,8 @@ sealed interface State : CircuitUiState {
 Repository call in Ui to presenter flow:
 
 ```kotlin
-// Before: composable launches repository call directly.
-// After: presenter observes repository and emits render-ready state.
+// Before: a composable launches a repository call directly during rendering.
+// After: a presenter observes the repository and emits render-ready state.
 ```
 
 `GlobalScope` to structured concurrency:

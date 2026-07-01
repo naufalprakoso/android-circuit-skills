@@ -68,14 +68,11 @@ Avoid overengineering for a small presenter. Watch for giant presenters, event-s
 
 - Use typed `Screen` destinations and the project's current navigation stack API.
 - Keep navigation decisions in presenters or parent coordinators, not low-level UI components.
-- Use `rememberAnsweringNavigator` and `PopResult` only when the installed version supports the desired result behavior.
-- Build deep-link stacks explicitly and preserve root behavior.
-- Use overlays for dialogs and sheets when they are transient UI over the current screen; use screen results when the flow is a navigable destination with data returned to the previous screen.
-- For nested components, prefer parent delegation or SubCircuit where low-level components should not own navigation.
+- Load `navigation-retention.md` for `NavStack`, root pop, results, overlays, nested navigation, retained state, and record-lifecycle decisions.
 
 ## Factories and Dependency Injection
 
 - Respect the project's current DI framework and Circuit wiring strategy.
 - Support manual factories, `Presenter.Factory`, `Ui.Factory`, `@CircuitInject`, KSP codegen, and assisted injection according to installed Circuit support.
 - Do not migrate DI frameworks as an incidental change.
-- For codegen, inspect mode-specific requirements and generated factory patterns before adding annotations.
+- Load `codegen-di.md` before adding or changing `@CircuitInject`, `@SubCircuitInject`, generated factories, or KSP args.

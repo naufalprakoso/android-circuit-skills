@@ -46,9 +46,11 @@ Load only the references needed for the task:
 
 | Task | References |
 | --- | --- |
-| New screen or feature | `architecture-state.md`, `compose-ui-performance.md`, `coroutines-lifecycle.md`, `testing.md`, `examples.md` |
+| New screen or feature | `architecture-state.md`, `navigation-retention.md`, `compose-ui-performance.md`, `coroutines-lifecycle.md`, `testing.md`, `examples.md` |
 | Remote-data feature | `architecture-state.md`, `data-networking.md`, `network-resilience-security.md`, `coroutines-lifecycle.md`, `testing.md` |
 | Code review or refactor | `clean-code-review.md`, `architecture-state.md`, plus affected-domain references |
+| Navigation, results, overlays, retained state | `navigation-retention.md`, `architecture-state.md`, `testing.md`, `examples.md` |
+| Circuit factory, codegen, or DI wiring | `codegen-di.md`, `architecture-state.md`, `source-map.md` if APIs are uncertain |
 | Performance | `compose-ui-performance.md`, `testing.md` |
 | Accessibility | `accessibility-quality.md`, `compose-ui-performance.md`, `testing.md` |
 | Kotlin Multiplatform | `cross-platform.md`, plus relevant architecture/data/UI references |
@@ -65,7 +67,7 @@ Inspect before coding:
 3. Inspect Gradle and version catalog files.
 4. Find existing `Screen`, `Presenter`, `Ui`, state, event, factory, and test patterns.
 5. Detect manual factories versus `@CircuitInject` or KSP code generation.
-6. Detect DI, navigation, overlays, retained state, repository, use-case, networking, persistence, and coroutine conventions.
+6. Detect DI, navigation, overlays, retained state, record lifecycle, repository, use-case, networking, persistence, and coroutine conventions.
 7. Discover test frameworks and runnable Gradle tasks from the repository.
 8. Search for similar existing features and prefer consistent patterns when they are sound.
 
